@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>AKM Broadcasting Overlay</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: transparent;
+        font-family: Arial, sans-serif;
+    }
+
+    /* Control Panel */
+    #controls {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: rgba(0,0,0,0.55);
+        padding: 15px;
+        border-radius: 10px;
+        color: white;
+        font-size: 16px;
+    }
+
+    #controls button {
+        margin: 5px;
+        padding: 10px 15px;
+        font-size: 15px;
+        border: none;
+        border-radius: 6px;
+        background: gold;
+        color: black;
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND SOUND -->
+<audio id="bgSound" src="assets/background.mp3" loop preload="auto"></audio>
+
+<!-- CONTROL PANEL -->
+<div id="controls">
+    <div><b>Background Sound</b></div>
+    <button onclick="playBg(0.15)">BG 15%</button>
+    <button onclick="playBg(0.35)">BG 35%</button>
+    <button onclick="playBg(0.65)">BG 65%</button>
+    <button onclick="stopBg()">Stop BG</button>
+</div>
+
+<script>
+    const bgSound = document.getElementById('bgSound');
+
+    function playBg(level) {
+        bgSound.volume = level;
+        bgSound.play();
+    }
+
+    function stopBg() {
+        bgSound.pause();
+        bgSound.currentTime = 0;
+    }
+</script>
+
+</body>
+</html>
