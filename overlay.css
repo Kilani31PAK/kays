@@ -1,0 +1,99 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    background: black;
+    font-family: Arial, sans-serif;
+}
+
+/* SCENE CONTROL */
+.scene {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+}
+
+.scene.active {
+    display: block;
+}
+
+/* LOGO */
+#logo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 120px;
+    z-index: 50;
+}
+
+/* CAMERA FULL (Scene 1) */
+.camera-full {
+    width: 100vw;
+    height: 100vh;
+    border: none;
+}
+
+/* SCENE 2 LAYOUT */
+.scene2-layout {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* CAMERA LEFT (Scene 2) */
+.camera-left {
+    width: 45vw;
+    height: 100vh;
+    border: none;
+}
+
+/* SCRIPTURE PANEL */
+.scripture {
+    width: 55vw;
+    height: 100vh;
+    padding: 40px;
+    font-size: 2.4rem;
+    color: white;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(10px);
+    overflow-y: auto;
+}
+
+/* LOWER THIRD */
+.lowerthird {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 40px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 2rem;
+    border-radius: 8px;
+    z-index: 40;
+}
+
+/* TICKER */
+#ticker-container,
+#ticker-container2 {
+    position: absolute;
+    bottom: 0;
+    width: 100vw;
+    height: 60px;
+    overflow: hidden;
+    background: rgba(0,0,0,0.7);
+}
+
+#ticker,
+#ticker2 {
+    position: absolute;
+    white-space: nowrap;
+    color: gold;
+    font-size: 2rem;
+    padding-left: 100%;
+    animation: scroll 18s linear infinite;
+}
+
+@keyframes scroll {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
