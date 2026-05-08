@@ -1,0 +1,10 @@
+<button onclick="sendTest()">TEST SEND</button>
+
+<script>
+function sendTest() {
+    overlayWindow.postMessage({
+        type: "lowerthird",
+        text: "CONNECTED TEST"
+    }, "*");
+}
+</script>
