@@ -1,0 +1,11 @@
+<button onclick="openOverlay()">OPEN OVERLAY</button>
+
+<script>
+let overlayWindow = null;
+
+function openOverlay() {
+    if (!overlayWindow || overlayWindow.closed) {
+        overlayWindow = window.open("index.html", "overlayWindow");
+    }
+}
+</script>
