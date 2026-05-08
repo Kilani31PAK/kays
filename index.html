@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Connection Test Overlay</title>
+    <link rel="stylesheet" href="overlay.css">
+</head>
+
+<body>
+
+    <!-- CONNECTION STATUS -->
+    <div id="status" class="status disconnected">NOT CONNECTED</div>
+
+    <!-- LOGO -->
+    <img id="logo" src="logo.png">
+
+    <!-- LOWER THIRD -->
+    <div id="lowerthird">LOWER THIRD</div>
+
+    <!-- TICKER -->
+    <div id="ticker-container">
+        <div id="ticker">TICKER TEXT</div>
+    </div>
+
+    <!-- CAMERA -->
+    <iframe id="camera" src="" allow="camera; microphone"></iframe>
+
+    <script>
+        let connected = false;
+
+        // If no message received in 3 seconds → NOT CONNECTED
+        setTimeout(() => {
+            if (!connected) {
+                document.getElementById("status").innerText = "NOT CONNECTED";
+                document.getElementById("status").className = "status disconnected";
+            }
+        }, 3000);
+
+        // Listen for messages
+        window.addEventListener("message", (event) => {
+            connected = true;
+
+            // Update status
+            document.getElementById("status").innerText = "CONNECTED";
+            document.getElementById("status").className = "status connected";
+
+            const data = event.data;
+
+            if (data.type === "lowerthird") {
+                document.getElementById("lowerthird").innerText = data.text;
+            }
+
+            if (data.type === "ticker") {
+                document.getElementById("ticker").innerText = data.text;
+            }
+
+            if (data.type === "camera") {
+                document.getElementById("camera").src = data.url;
+            }
+        });
+    </script>
+
+</body>
+</html>
