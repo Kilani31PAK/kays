@@ -9,71 +9,22 @@
 
 <body>
 
-<!-- SCENE 1 — INTRO -->
-<div id="scene1" class="scene">
+<div id="overlay">
     <img id="logo" src="https://i.imgur.com/8QfQJ5B.png" alt="Logo">
     <h1 id="title">AKM Broadcasting Network</h1>
 </div>
 
-<!-- SCENE 2 — CAMERA LEFT / SCRIPTURE RIGHT -->
-<div id="scene2" class="scene">
-    <div id="scene2Container">
-
-        <div id="scene2Camera">
-            <iframe id="camFrame" src="" allow="camera; microphone"></iframe>
-        </div>
-
-        <div id="scene2Scripture">
-            <h2 id="scriptureTitle">Scripture of the Day</h2>
-            <p id="scriptureText">“In the beginning was the Word…”</p>
-        </div>
-
-    </div>
-</div>
-
-<!-- LOWER THIRD -->
-<div id="lowerThird">
-    <span id="lowerThirdText">Pastor Aziz Kilani — Live at AKM Ministries</span>
-</div>
-
-<!-- TICKER -->
-<div id="ticker">
-    <span id="tickerText">Welcome to AKM Broadcasting Network — Jesus is Lord — Stay Blessed —</span>
-</div>
-
-<!-- AUDIO INTRO -->
 <audio id="introAudio" src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_7b6e4c7f8e.mp3?filename=cinematic-intro-110397.mp3"></audio>
 
 <script>
-
-// PLAY INTRO ON LOAD
-window.onload = () => {
-    showScene(1);
+function playIntro() {
+    document.getElementById("overlay").style.opacity = "1";
     document.getElementById("introAudio").play();
+}
+
+window.onload = () => {
+    playIntro();
 };
-
-// SCENE SWITCHING
-function showScene(sceneNumber) {
-    document.getElementById("scene1").style.display = "none";
-    document.getElementById("scene2").style.display = "none";
-
-    if (sceneNumber === 1) {
-        document.getElementById("scene1").style.display = "flex";
-    } else if (sceneNumber === 2) {
-        document.getElementById("scene2").style.display = "flex";
-    }
-}
-
-// LOAD CAMERA FEED INTO SCENE 2
-function setCameraFeed(url) {
-    document.getElementById("camFrame").src = url;
-}
-
-// UPDATE SCRIPTURE TEXT LIVE
-function updateScripture(text) {
-    document.getElementById("scriptureText").innerText = text;
-}
-
 </script>
 
 </body>
