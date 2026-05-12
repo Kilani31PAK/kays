@@ -2,63 +2,73 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Connection Test Overlay</title>
-    <link rel="stylesheet" href="overlay.css">
+    <title>GloryMinistry Overlay</title>
+    <link rel="stylesheet" href="Overlay.css">
 </head>
 
 <body>
 
-    <!-- CONNECTION STATUS -->
-    <div id="status" class="status disconnected">NOT CONNECTED</div>
+<!-- CAMERA FEED -->
+<iframe id="cameraFrame" src="" allow="camera; microphone"></iframe>
 
-    <!-- LOGO -->
-    <img id="logo" src="logo.png">
+<!-- LOGO -->
+<img id="logo" src="logo.png">
 
-    <!-- LOWER THIRD -->
-    <div id="lowerthird">LOWER THIRD</div>
+<!-- LIVE BADGE -->
+<div id="liveBadge">LIVE</div>
 
-    <!-- TICKER -->
-    <div id="ticker-container">
-        <div id="ticker">TICKER TEXT</div>
-    </div>
+<!-- LOWER THIRD -->
+<div id="lowerthird">
+    <div id="lowerthird-text"></div>
+</div>
 
-    <!-- CAMERA -->
-    <iframe id="camera" src="" allow="camera; microphone"></iframe>
+<!-- SCRIPTURE -->
+<div id="scripture">
+    <div id="scripture-text"></div>
+</div>
 
-    <script>
-        let connected = false;
+<!-- TICKER -->
+<div id="ticker">
+    <div id="ticker-content"></div>
+</div>
 
-        // If no message received in 3 seconds → NOT CONNECTED
-        setTimeout(() => {
-            if (!connected) {
-                document.getElementById("status").innerText = "NOT CONNECTED";
-                document.getElementById("status").className = "status disconnected";
-            }
-        }, 3000);
+<!-- SCENES -->
+<div id="scene1" class="scene active"></div>
+<div id="scene2" class="scene"></div>
 
-        // Listen for messages
-        window.addEventListener("message", (event) => {
-            connected = true;
+<script>
+window.addEventListener("message", (event) => {
+    const data = event.data;
 
-            // Update status
-            document.getElementById("status").innerText = "CONNECTED";
-            document.getElementById("status").className = "status connected";
+    if (data.type === "ticker") {
+        document.getElementById("ticker-content").innerText = data.text;
+    }
 
-            const data = event.data;
+    if (data.type === "lowerthird") {
+        const lt = document.getElementById("lowerthird");
+        document.getElementById("lowerthird-text").innerText = data.text;
+        lt.classList.add("show");
+        setTimeout(() => lt.classList.remove("show"), 8000);
+    }
 
-            if (data.type === "lowerthird") {
-                document.getElementById("lowerthird").innerText = data.text;
-            }
+    if (data.type === "scripture") {
+        document.getElementById("scripture-text").innerText = data.text;
+    }
 
-            if (data.type === "ticker") {
-                document.getElementById("ticker").innerText = data.text;
-            }
+    if (data.type === "camera") {
+        document.getElementById("cameraFrame").src = data.url;
+    }
 
-            if (data.type === "camera") {
-                document.getElementById("camera").src = data.url;
-            }
-        });
-    </script>
+    if (data.type === "scene") {
+        document.querySelectorAll(".scene").forEach(s => s.classList.remove("active"));
+        document.getElementById(data.scene).classList.add("active");
+    }
+
+    if (data.type === "live") {
+        document.getElementById("liveBadge").style.display = data.state ? "block" : "none";
+    }
+});
+</script>
 
 </body>
 </html>
