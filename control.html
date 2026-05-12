@@ -1,3 +1,124 @@
-function openOverlay() {
-    window.location.href = "index.html?reload=" + Date.now();
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Comfort Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #111;
+            color: white;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            color: #4db8ff;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: none;
+            font-size: 16px;
+        }
+
+        input {
+            background: #222;
+            color: white;
+        }
+
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #0a84ff;
+        }
+
+        .row {
+            margin-bottom: 25px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Comfort Panel</h1>
+
+    <!-- LOWER THIRD -->
+    <div class="row">
+        <h2>Lower Third</h2>
+        <input id="lowerthirdInput" placeholder="Enter Lower Third text">
+        <button onclick="sendLowerThird()">Send Lower Third</button>
+        <button onclick="clearLowerThird()">Clear Lower Third</button>
+    </div>
+
+    <!-- TICKER -->
+    <div class="row">
+        <h2>Ticker</h2>
+        <input id="tickerInput" placeholder="Enter Ticker text">
+        <button onclick="sendTicker()">Send Ticker</button>
+        <button onclick="clearTicker()">Clear Ticker</button>
+    </div>
+
+    <!-- SCENES -->
+    <div class="row">
+        <h2>Scenes</h2>
+        <button onclick="switchScene1()">Switch to Scene 1</button>
+        <button onclick="switchScene2()">Switch to Scene 2</button>
+    </div>
+
+<script>
+/* LOWER THIRD */
+function sendLowerThird() {
+    window.opener.postMessage({
+        type: "lowerthird",
+        text: document.getElementById("lowerthirdInput").value
+    }, "*");
 }
+
+function clearLowerThird() {
+    window.opener.postMessage({
+        type: "lowerthird",
+        text: ""
+    }, "*");
+}
+
+/* TICKER */
+function sendTicker() {
+    window.opener.postMessage({
+        type: "ticker",
+        text: document.getElementById("tickerInput").value
+    }, "*");
+}
+
+function clearTicker() {
+    window.opener.postMessage({
+        type: "ticker",
+        text: ""
+    }, "*");
+}
+
+/* SCENES */
+function switchScene1() {
+    window.opener.postMessage({
+        type: "scene",
+        scene: "scene1"
+    }, "*");
+}
+
+function switchScene2() {
+    window.opener.postMessage({
+        type: "scene",
+        scene: "scene2"
+    }, "*");
+}
+</script>
+
+</body>
+</html>
