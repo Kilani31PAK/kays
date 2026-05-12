@@ -2,121 +2,65 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Comfort Panel</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #111;
-            color: white;
-            padding: 20px;
-        }
-
-        h2 {
-            margin-top: 30px;
-            color: #4db8ff;
-        }
-
-        input, button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border-radius: 6px;
-            border: none;
-            font-size: 16px;
-        }
-
-        input {
-            background: #222;
-            color: white;
-        }
-
-        button {
-            background: #007bff;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            background: #0a84ff;
-        }
-
-        .row {
-            margin-bottom: 25px;
-        }
-    </style>
+    <title>Overlay Control</title>
 </head>
-<body>
 
-    <h1>Comfort Panel</h1>
+<body style="font-family: Arial; padding: 20px;">
 
-    <!-- LOWER THIRD -->
-    <div class="row">
-        <h2>Lower Third</h2>
-        <input id="lowerthirdInput" placeholder="Enter Lower Third text">
-        <button onclick="sendLowerThird()">Send Lower Third</button>
-        <button onclick="clearLowerThird()">Clear Lower Third</button>
-    </div>
+<h2>GloryMinistry Control Panel</h2>
 
-    <!-- TICKER -->
-    <div class="row">
-        <h2>Ticker</h2>
-        <input id="tickerInput" placeholder="Enter Ticker text">
-        <button onclick="sendTicker()">Send Ticker</button>
-        <button onclick="clearTicker()">Clear Ticker</button>
-    </div>
+<!-- TICKER -->
+<input id="tickerInput" placeholder="Ticker text" style="width:100%; font-size:18px;">
+<button onclick="sendTicker()">Update Ticker</button>
 
-    <!-- SCENES -->
-    <div class="row">
-        <h2>Scenes</h2>
-        <button onclick="switchScene1()">Switch to Scene 1</button>
-        <button onclick="switchScene2()">Switch to Scene 2</button>
-    </div>
+<!-- LOWER THIRD -->
+<br><br>
+<input id="lowerthirdInput" placeholder="Lower Third" style="width:100%; font-size:18px;">
+<button onclick="sendLowerthird()">Show Lower Third</button>
+
+<!-- SCRIPTURE -->
+<br><br>
+<input id="scriptureInput" placeholder="Scripture" style="width:100%; font-size:18px;">
+<button onclick="sendScripture()">Update Scripture</button>
+
+<!-- CAMERA -->
+<br><br>
+<input id="cameraInput" placeholder="Camera URL" style="width:100%; font-size:18px;">
+<button onclick="sendCamera()">Load Camera</button>
+
+<!-- SCENES -->
+<br><br>
+<button onclick="switchScene('scene1')">Scene 1</button>
+<button onclick="switchScene('scene2')">Scene 2</button>
+
+<!-- LIVE -->
+<br><br>
+<button onclick="toggleLive(true)">LIVE ON</button>
+<button onclick="toggleLive(false)">LIVE OFF</button>
 
 <script>
-/* LOWER THIRD */
-function sendLowerThird() {
-    window.opener.postMessage({
-        type: "lowerthird",
-        text: document.getElementById("lowerthirdInput").value
-    }, "*");
-}
-
-function clearLowerThird() {
-    window.opener.postMessage({
-        type: "lowerthird",
-        text: ""
-    }, "*");
-}
-
-/* TICKER */
 function sendTicker() {
-    window.opener.postMessage({
-        type: "ticker",
-        text: document.getElementById("tickerInput").value
-    }, "*");
+    window.opener.postMessage({ type: "ticker", text: tickerInput.value }, "*");
 }
 
-function clearTicker() {
-    window.opener.postMessage({
-        type: "ticker",
-        text: ""
-    }, "*");
+function sendLowerthird() {
+    window.opener.postMessage({ type: "lowerthird", text: lowerthirdInput.value }, "*");
 }
 
-/* SCENES */
-function switchScene1() {
-    window.opener.postMessage({
-        type: "scene",
-        scene: "scene1"
-    }, "*");
+function sendScripture() {
+    window.opener.postMessage({ type: "scripture", text: scriptureInput.value }, "*");
 }
 
-function switchScene2() {
-    window.opener.postMessage({
-        type: "scene",
-        scene: "scene2"
-    }, "*");
+function sendCamera() {
+    window.opener.postMessage({ type: "camera", url: cameraInput.value }, "*");
+}
+
+function switchScene(scene) {
+    window.opener.postMessage({ type: "scene", scene: scene }, "*");
+}
+
+function toggleLive(state) {
+    window.opener.postMessage({ type: "live", state: state }, "*");
 }
 </script>
 
