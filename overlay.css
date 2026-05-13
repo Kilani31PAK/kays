@@ -1,0 +1,41 @@
+/* SCENE 2 — CAMERA LEFT, SCRIPTURE PANEL RIGHT */
+#scene2 {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* CAMERA (left side) */
+#cameraFrame2 {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 45vw;
+    height: 100vh;
+    border: none;
+    object-fit: cover;
+    z-index: 10;
+}
+
+/* SCRIPTURE PANEL (right side) */
+#scripture2 {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 55vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.45);
+    backdrop-filter: blur(12px);
+    padding: 50px 40px;
+    color: white;
+    font-size: 2.6rem;
+    overflow-y: auto;
+    border-left: 2px solid rgba(255,255,255,0.2);
+    z-index: 20;
+}
+
+/* TEXT INSIDE SCRIPTURE PANEL */
+#scripture2-text {
+    line-height: 1.4;
+    white-space: pre-wrap;
+}
