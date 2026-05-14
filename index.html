@@ -11,17 +11,12 @@
 
   <!-- QUARTER SCREEN MONITOR -->
   <div class="monitor-quarter">
-    <iframe id="monitorFeed" src="https://vdo.ninja/?view=AKMStream
-&quality=0
-&codec=h264
-&proaudio
-&stereo=1
-&audiobitrate=256
-&samplerate=48000
-&channels=2
-&cleanoutput
-&novideo=0
-&autoplay=1" frameborder="0"></iframe>
+    <iframe
+      id="monitorFeed"
+      src="https://vdo.ninja/?view=AKMStream&quality=0&codec=h264&proaudio&stereo=1&audiobitrate=256&samplerate=48000&channels=2&cleanoutput&novideo=0&autoplay=1"
+      frameborder="0"
+      allow="autoplay"
+    ></iframe>
   </div>
 
   <!-- LIVE BUG -->
@@ -46,36 +41,45 @@
 </div>
 
 <script>
-/* WebSocket Receiver */
-const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket("ws://192.168.0.214:8080");
+
+ws.onopen = () => {
+  console.log("Overlay connected to WebSocket");
+};
+
+ws.onerror = (err) => {
+  console.error("WebSocket error in Overlay:", err);
+};
 
 ws.onmessage = (event) => {
   const msg = JSON.parse(event.data);
 
   if (msg.type === "live") {
-    document.getElementById("liveBug").style.display = msg.state ? "flex" : "none";
+    document.getElementById("liveBug").style.display = msg.state ? "inline-flex" : "none";
   }
 
   if (msg.type === "lowerthird") {
+    const lt = document.getElementById("lowerthird");
     if (msg.state) {
-      document.getElementById("lowerthird").style.display = "flex";
-      document.getElementById("lt-title").innerText = msg.title;
-      document.getElementById("lt-sub").innerText = msg.subtitle;
+      lt.style.display = "flex";
+      document.getElementById("lt-title").innerText = msg.title || "";
+      document.getElementById("lt-sub").innerText = msg.subtitle || "";
     } else {
-      document.getElementById("lowerthird").style.display = "none";
+      lt.style.display = "none";
     }
   }
 
   if (msg.type === "ticker") {
+    const tk = document.getElementById("ticker");
     if (msg.state) {
-      document.getElementById("ticker").style.display = "flex";
-      document.getElementById("tickerText").innerText = msg.text;
+      tk.style.display = "flex";
+      document.getElementById("tickerText").innerText = msg.text || "";
     } else {
-      document.getElementById("ticker").style.display = "none";
+      tk.style.display = "none";
     }
   }
 
-  if (msg.type === "monitor") {
+  if (msg.type === "monitor" && msg.url) {
     document.getElementById("monitorFeed").src = msg.url;
   }
 };
