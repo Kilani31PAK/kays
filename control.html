@@ -9,7 +9,10 @@
       padding: 20px;
       background: #0f172a;
       color: white;
-      font-family: system-ui;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    h2 {
+      margin-top: 0;
     }
     button {
       width: 100%;
@@ -20,6 +23,10 @@
       border-radius: 8px;
       background: #1e3a8a;
       color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #2563eb;
     }
     input {
       width: 100%;
@@ -27,6 +34,7 @@
       margin: 8px 0;
       border-radius: 6px;
       border: none;
+      font-size: 1rem;
     }
     .section {
       margin-bottom: 30px;
@@ -43,8 +51,8 @@
 <!-- LIVE -->
 <div class="section">
   <h3>🔴 LIVE</h3>
-  <button onclick="send({type:'live', state:true})">Show LIVE</button>
-  <button onclick="send({type:'live', state:false})">Hide LIVE</button>
+  <button onclick="sendMsg({type:'live', state:true})">Show LIVE</button>
+  <button onclick="sendMsg({type:'live', state:false})">Hide LIVE</button>
 </div>
 
 <!-- LOWER THIRD -->
@@ -53,7 +61,7 @@
   <input id="ltTitle" placeholder="Title">
   <input id="ltSub" placeholder="Subtitle">
   <button onclick="showLT()">Show Lower Third</button>
-  <button onclick="send({type:'lowerthird', state:false})">Hide Lower Third</button>
+  <button onclick="sendMsg({type:'lowerthird', state:false})">Hide Lower Third</button>
 </div>
 
 <!-- TICKER -->
@@ -61,34 +69,39 @@
   <h3>📰 Ticker</h3>
   <input id="tickerInput" placeholder="Ticker text">
   <button onclick="showTicker()">Show Ticker</button>
-  <button onclick="send({type:'ticker', state:false})">Hide Ticker</button>
+  <button onclick="sendMsg({type:'ticker', state:false})">Hide Ticker</button>
 </div>
 
 <!-- MONITOR -->
 <div class="section">
-  <h3>🎥 Monitor Feed</h3>https://vdo.ninja/?view=AKMStream
-&quality=0
-&codec=h264
-&proaudio
-&stereo=1
-&audiobitrate=256
-&samplerate=48000
-&channels=2
-&cleanoutput
-&novideo=0
-  <input id="monitorURL" placeholder=" ">
+  <h3>🎥 Monitor Feed</h3>
+  <input
+    id="monitorURL"
+    placeholder="https://vdo.ninja/?view=AKMStream&quality=0&codec=h264&proaudio&stereo=1&audiobitrate=256&samplerate=48000&channels=2&cleanoutput&novideo=0&autoplay=1">
   <button onclick="setMonitor()">Load Monitor</button>
 </div>
 
 <script>
-const ws = new WebSocket("ws://localhost:8080");
+const ws = new WebSocket("ws://192.168.0.214:8080");
 
-function send(obj) {
-  ws.send(JSON.stringify(obj));
+ws.onopen = () => {
+  console.log("Control Panel connected to WebSocket");
+};
+
+ws.onerror = (err) => {
+  console.error("WebSocket error in Control Panel:", err);
+};
+
+function sendMsg(obj) {
+  if (ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify(obj));
+  } else {
+    console.warn("WebSocket not open, cannot send:", obj);
+  }
 }
 
 function showLT() {
-  send({
+  sendMsg({
     type: "lowerthird",
     state: true,
     title: document.getElementById("ltTitle").value,
@@ -97,7 +110,7 @@ function showLT() {
 }
 
 function showTicker() {
-  send({
+  sendMsg({
     type: "ticker",
     state: true,
     text: document.getElementById("tickerInput").value
@@ -105,7 +118,7 @@ function showTicker() {
 }
 
 function setMonitor() {
-  send({
+  sendMsg({
     type: "monitor",
     url: document.getElementById("monitorURL").value
   });
