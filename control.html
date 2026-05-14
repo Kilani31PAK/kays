@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Control Panel</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #0f172a;
+      color: white;
+      font-family: system-ui;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      margin: 10px 0;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 8px;
+      background: #1e3a8a;
+      color: white;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      border-radius: 6px;
+      border: none;
+    }
+    .section {
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid #334155;
+    }
+  </style>
+</head>
+
+<body>
+
+<h2>🎛️ Control Panel</h2>
+
+<!-- LIVE -->
+<div class="section">
+  <h3>🔴 LIVE</h3>
+  <button onclick="send({type:'live', state:true})">Show LIVE</button>
+  <button onclick="send({type:'live', state:false})">Hide LIVE</button>
+</div>
+
+<!-- LOWER THIRD -->
+<div class="section">
+  <h3>📺 Lower Third</h3>
+  <input id="ltTitle" placeholder="Title">
+  <input id="ltSub" placeholder="Subtitle">
+  <button onclick="showLT()">Show Lower Third</button>
+  <button onclick="send({type:'lowerthird', state:false})">Hide Lower Third</button>
+</div>
+
+<!-- TICKER -->
+<div class="section">
+  <h3>📰 Ticker</h3>
+  <input id="tickerInput" placeholder="Ticker text">
+  <button onclick="showTicker()">Show Ticker</button>
+  <button onclick="send({type:'ticker', state:false})">Hide Ticker</button>
+</div>
+
+<!-- MONITOR -->
+<div class="section">
+  <h3>🎥 Monitor Feed</h3>
+  <input id="monitorURL" placeholder="Paste VDO.Ninja link">
+  <button onclick="setMonitor()">Load Monitor</button>
+</div>
+
+<script>
+const ws = new WebSocket("ws://localhost:8080");
+
+function send(obj) {
+  ws.send(JSON.stringify(obj));
+}
+
+function showLT() {
+  send({
+    type: "lowerthird",
+    state: true,
+    title: document.getElementById("ltTitle").value,
+    subtitle: document.getElementById("ltSub").value
+  });
+}
+
+function showTicker() {
+  send({
+    type: "ticker",
+    state: true,
+    text: document.getElementById("tickerInput").value
+  });
+}
+
+function setMonitor() {
+  send({
+    type: "monitor",
+    url: document.getElementById("monitorURL").value
+  });
+}
+</script>
+
+</body>
+</html>
