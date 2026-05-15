@@ -1,47 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Controller</title>
-../shared/styles.css
+  <meta charset="UTF-8">
+  <title>Controller</title>
+
+  <!-- ✅ CSS -->
+  ../shared/styles.css
 </head>
 <body>
 
-<h2>🎛 Broadcast Controller</h2>
+  <h2>Broadcast Controller</h2>
 
-<h3>Lower Third</h3>
-<input id="ltInput" placeholder="Name | Title">
-<button onclick="showLT()">SHOW</button>
-<button onclick="hideLT()">HIDE</button>
-
-<h3>Ticker</h3>
-<input id="tickerInput" placeholder="Breaking News...">
-<button onclick="updateTicker()">UPDATE</button>
-
-<h3>Preview</h3>
-../output/program.html</iframe>
-
-<script>
-const channel = new BroadcastChannel("broadcast");
-
-function showLT() {
-  channel.postMessage({
-    type: "lowerthird",
-    text: ltInput.value
-  });
-}
-
-function hideLT() {
-  channel.postMessage({ type: "hideLowerThird" });
-}
-
-function updateTicker() {
-  channel.postMessage({
-    type: "ticker",
-    text: tickerInput.value
-  });
-}
-</script>
-
+  <!-- ✅ JS -->
+  ../shared/socket.jsscript>
 </body>
 </html>
